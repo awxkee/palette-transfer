@@ -2,7 +2,7 @@ workspace = { members = ["src/app"] }
 
 [package]
 name = "palette-transfer"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Statistical copy palette from one image to another"
 readme = "README.md"

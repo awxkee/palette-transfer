@@ -2,10 +2,13 @@
 use std::arch::aarch64::*;
 
 pub trait StdDev {
-    fn std_dev(&self, mean: f64) -> Option<f64>;
+    fn std_dev(&self, mean: f64) -> f64;
 }
 
-pub fn std_dev(slice: &[f32], mean: f64) -> Option<f64> {
+pub fn std_dev(slice: &[f32], mean: f64) -> f64 {
+    if slice.len() == 0 {
+        return 0.;
+    }
     let mut accumulator = 0f64;
 
     let mut i = 0usize;
@@ -34,11 +37,11 @@ pub fn std_dev(slice: &[f32], mean: f64) -> Option<f64> {
         accumulator += dx * dx;
         i += 1;
     }
-    return Some((accumulator / count as f64).sqrt());
+    return (accumulator / count as f64).sqrt();
 }
 
 impl StdDev for Vec<f32> {
-    fn std_dev(&self, mean: f64) -> Option<f64> {
+    fn std_dev(&self, mean: f64) -> f64 {
         std_dev(self.as_slice(), mean)
     }
 }

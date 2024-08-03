@@ -107,113 +107,29 @@ fn copy_palette_impl<const SOURCE_IMAGE_CONFIGURATION: u8>(
         }
     }
 
-    let mean_source_lightness = match source_lightness.average() {
-        None => {
-            return Err("Valid source lightness average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_source_lightness = source_lightness.average();
 
-    let std_dev_source_lightness = match source_lightness.std_dev(mean_source_lightness) {
-        None => {
-            return Err("Valid source lightness std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_source_lightness = source_lightness.std_dev(mean_source_lightness);
 
-    let mean_source_alpha = match source_alpha.average() {
-        None => {
-            return Err("Valid source alpha average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_source_alpha = source_alpha.average();
 
-    let std_dev_source_alpha = match source_alpha.std_dev(mean_source_alpha) {
-        None => {
-            return Err("Valid source alpha std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_source_alpha = source_alpha.std_dev(mean_source_alpha);
 
-    let mean_source_beta = match source_beta.average() {
-        None => {
-            return Err("Valid source beta average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_source_beta = source_beta.average();
 
-    let std_dev_source_beta = match source_beta.std_dev(mean_source_beta) {
-        None => {
-            return Err("Valid source beta std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_source_beta = source_beta.std_dev(mean_source_beta);
 
-    let mean_target_lightness = match target_lightness.average() {
-        None => {
-            return Err("Valid target lightness average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_target_lightness = target_lightness.average();
 
-    let std_dev_target_lightness = match target_lightness.std_dev(mean_target_lightness) {
-        None => {
-            return Err("Valid target lightness std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_target_lightness = target_lightness.std_dev(mean_target_lightness);
 
-    let mean_target_alpha = match target_alpha.average() {
-        None => {
-            return Err("Valid target alpha average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_target_alpha = target_alpha.average();
 
-    let std_dev_target_alpha = match target_alpha.std_dev(mean_target_alpha) {
-        None => {
-            return Err("Valid target alpha std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_target_alpha = target_alpha.std_dev(mean_target_alpha);
 
-    let mean_target_beta = match target_beta.average() {
-        None => {
-            return Err("Valid target beta average is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let mean_target_beta = target_beta.average();
 
-    let std_dev_target_beta = match target_beta.std_dev(mean_target_beta) {
-        None => {
-            return Err("Valid target beta std dev is expected but is was null"
-                .parse()
-                .unwrap());
-        }
-        Some(v) => v,
-    };
+    let std_dev_target_beta = target_beta.std_dev(mean_target_beta);
 
     let op_scale_lightness = (std_dev_source_lightness / std_dev_target_lightness) as f32;
     let op_scale_alpha = (std_dev_source_alpha / std_dev_target_alpha) as f32;
