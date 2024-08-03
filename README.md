@@ -39,3 +39,11 @@ image::save_buffer(
 )
 .unwrap();
 ```
+
+#### Results example
+
+<p float="left">
+    <img src="https://github.com/awxkee/palette-transfer/blob/4580425a17a3e551f22b6c53b15bb0e9343d911c/assets/dwl.jpeg?raw=true" width="250" height="170">
+    <img src="https://github.com/awxkee/palette-transfer/blob/master/assets/twl.jpeg?raw=true" width="250" height="170">
+    <img src="https://github.com/awxkee/palette-transfer/blob/master/assets/target_display.jpg?raw=true" width="250" height="170">
+</p>
