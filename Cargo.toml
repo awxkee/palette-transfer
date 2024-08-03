@@ -1,0 +1,20 @@
+workspace = { members = ["src/app"] }
+
+[package]
+name = "palette-transfer"
+version = "0.1.0"
+edition = "2021"
+description = "Statistical copy palette from one image to another"
+readme = "README.md"
+keywords = ["palette", "image"]
+license = "Apache-2.0 OR BSD-3-Clause"
+authors = ["Radzivon Bartoshyk"]
+documentation = "https://github.com/awxkee/palette-transfer.git"
+categories = ["multimedia::images"]
+homepage = "https://github.com/awxkee/palette-transfer.git"
+repository = "https://github.com/awxkee/palette-transfer.git"
+exclude = ["*.jpg"]
+
+
+[dependencies]
+colorutils-rs = "0.5.6"
