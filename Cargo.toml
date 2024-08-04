@@ -17,4 +17,4 @@ exclude = ["*.jpg"]
 
 
 [dependencies]
-colorutils-rs = {path = "../colorutils-rs"}
+colorutils-rs = "0.5.8"
