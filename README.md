@@ -26,6 +26,7 @@ copy_palette_rgb(
     & mut dst,
     destination_dimension.0,
     destination_dimension.1,
+    1.,
     TransferColorspace::OKLAB,
 )
 .unwrap();

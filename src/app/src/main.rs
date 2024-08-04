@@ -29,12 +29,13 @@ fn main() {
         &mut dst,
         destination_dimension.0,
         destination_dimension.1,
-        TransferColorspace::OKLAB,
+        0.7,
+        TransferColorspace::LAB,
     )
     .unwrap();
 
     image::save_buffer(
-        "converted_oklab.jpg",
+        "converted_lalphabeta.jpg",
         &dst,
         destination_dimension.0,
         destination_dimension.1,

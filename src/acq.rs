@@ -9,6 +9,11 @@ use crate::fast_std_dev::StdDev;
 use crate::image_configuration::ImageConfiguration;
 use crate::TransferColorspace;
 
+#[inline]
+fn lerp(a: f32, b: f32, f: f32) -> f32 {
+    a + f * (b - a)
+}
+
 fn copy_palette_impl<const SOURCE_IMAGE_CONFIGURATION: u8>(
     src: &[u8],
     src_width: u32,
@@ -16,6 +21,7 @@ fn copy_palette_impl<const SOURCE_IMAGE_CONFIGURATION: u8>(
     target: &mut [u8],
     target_width: u32,
     target_height: u32,
+    intensity: f32,
     perceptual_transformer: fn(&[u8], &mut [f32], u32, u32),
     display_transformer: fn(&[f32], &mut [u8], u32, u32),
 ) -> Result<(), String> {
@@ -148,34 +154,41 @@ fn copy_palette_impl<const SOURCE_IMAGE_CONFIGURATION: u8>(
             * source_configuration.get_channels_count()
     ];
 
-    for ((((perceptual_chunk, lightness), alpha), beta), display_alpha) in (perceptual_dest
-        .chunks_exact_mut(source_configuration.get_channels_count()))
-    .zip(target_lightness)
-    .zip(target_alpha)
-    .zip(target_beta)
-    .zip(target_display_alpha)
+    for ((((perceptual_chunk, target_lightness), target_alpha), target_beta), display_alpha) in
+        perceptual_dest
+            .chunks_exact_mut(source_configuration.get_channels_count())
+            .zip(target_lightness)
+            .zip(target_alpha)
+            .zip(target_beta)
+            .zip(target_display_alpha)
     {
         unsafe {
             if !is_nan_lightness {
-                *perceptual_chunk.get_unchecked_mut(0) = op_scale_lightness
-                    * (lightness - mean_target_lightness as f32)
+                let new_lightness = op_scale_lightness
+                    * (target_lightness - mean_target_lightness as f32)
                     + mean_source_lightness as f32;
+                let c0 = lerp(target_lightness, new_lightness, intensity);
+                *perceptual_chunk.get_unchecked_mut(0) = c0;
             } else {
-                *perceptual_chunk.get_unchecked_mut(0) = lightness;
+                *perceptual_chunk.get_unchecked_mut(0) = target_lightness;
             }
 
             if !is_nan_alpha {
-                *perceptual_chunk.get_unchecked_mut(1) =
-                    op_scale_alpha * (alpha - mean_target_alpha as f32) + mean_source_alpha as f32;
+                let new_alpha = op_scale_alpha * (target_alpha - mean_target_alpha as f32)
+                    + mean_source_alpha as f32;
+                let c1 = lerp(target_alpha, new_alpha, intensity);
+                *perceptual_chunk.get_unchecked_mut(1) = c1;
             } else {
-                *perceptual_chunk.get_unchecked_mut(1) = alpha;
+                *perceptual_chunk.get_unchecked_mut(1) = target_alpha;
             }
 
             if !is_nan_beta {
-                *perceptual_chunk.get_unchecked_mut(2) =
-                    op_scale_beta * (beta - mean_target_beta as f32) + mean_source_beta as f32;
+                let new_beta = op_scale_beta * (target_beta - mean_target_beta as f32)
+                    + mean_source_beta as f32;
+                let c2 = lerp(target_beta, new_beta, intensity);
+                *perceptual_chunk.get_unchecked_mut(2) = c2;
             } else {
-                *perceptual_chunk.get_unchecked_mut(2) = beta;
+                *perceptual_chunk.get_unchecked_mut(2) = target_beta;
             }
 
             if source_configuration.has_alpha() {
@@ -197,6 +210,7 @@ pub fn copy_palette_rgb(
     target: &mut [u8],
     target_width: u32,
     target_height: u32,
+    intensity: f32,
     transfer_colorspace: TransferColorspace,
 ) -> Result<(), String> {
     copy_palette_impl::<{ ImageConfiguration::Rgb as u8 }>(
@@ -206,6 +220,7 @@ pub fn copy_palette_rgb(
         target,
         target_width,
         target_height,
+        intensity,
         transfer_colorspace.get_perceptual_transformer(ImageConfiguration::Rgb),
         transfer_colorspace.get_display_transformer(ImageConfiguration::Rgb),
     )
@@ -219,6 +234,7 @@ pub fn copy_palette_rgba(
     target: &mut [u8],
     target_width: u32,
     target_height: u32,
+    intensity: f32,
     transfer_colorspace: TransferColorspace,
 ) -> Result<(), String> {
     copy_palette_impl::<{ ImageConfiguration::Rgba as u8 }>(
@@ -228,6 +244,7 @@ pub fn copy_palette_rgba(
         target,
         target_width,
         target_height,
+        intensity,
         transfer_colorspace.get_perceptual_transformer(ImageConfiguration::Rgba),
         transfer_colorspace.get_display_transformer(ImageConfiguration::Rgba),
     )
