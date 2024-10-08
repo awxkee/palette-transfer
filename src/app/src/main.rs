@@ -4,6 +4,7 @@
  * // Use of this source code is governed by a BSD-style
  * // license that can be found in the LICENSE file.
  */
+use std::time::Instant;
 use image::{EncodableLayout, GenericImageView, ImageReader};
 use palette_transfer::{copy_palette_rgb, TransferColorspace};
 
@@ -22,6 +23,9 @@ fn main() {
     let src = source.as_bytes();
     let target = destination.as_bytes();
     let mut dst = Vec::from(target);
+
+    let start_time = Instant::now();
+
     copy_palette_rgb(
         src,
         source_dimensions.0,
@@ -29,10 +33,12 @@ fn main() {
         &mut dst,
         destination_dimension.0,
         destination_dimension.1,
-        0.7,
-        TransferColorspace::LAB,
+        1.0,
+        TransferColorspace::OKLAB,
     )
     .unwrap();
+
+    println!("Exec time {:?}", start_time.elapsed());
 
     image::save_buffer(
         "converted_lalphabeta.jpg",
