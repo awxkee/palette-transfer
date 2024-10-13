@@ -37,7 +37,7 @@ pub fn std_dev(slice: &[f32], mean: f64) -> f64 {
         accumulator += dx * dx;
         i += 1;
     }
-    return (accumulator / count as f64).sqrt();
+    (accumulator / count as f64).sqrt()
 }
 
 impl StdDev for Vec<f32> {

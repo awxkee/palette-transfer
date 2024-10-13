@@ -4,9 +4,9 @@
  * // Use of this source code is governed by a BSD-style
  * // license that can be found in the LICENSE file.
  */
-use std::time::Instant;
 use image::{EncodableLayout, GenericImageView, ImageReader};
 use palette_transfer::{copy_palette_rgb, TransferColorspace};
+use std::time::Instant;
 
 fn main() {
     let source = ImageReader::open("./assets/dwl.jpeg")
@@ -14,7 +14,7 @@ fn main() {
         .decode()
         .unwrap();
     let source_dimensions = source.dimensions();
-    let destination = ImageReader::open("./assets/twl.jpeg")
+    let destination = ImageReader::open("./assets/pexels-josh-hild-1270765-2422497.jpg")
         .unwrap()
         .decode()
         .unwrap();

@@ -2,7 +2,7 @@ workspace = { members = ["src/app"] }
 
 [package]
 name = "palette-transfer"
-version = "0.1.4"
+version = "0.2.0"
 edition = "2021"
 description = "Statistical copy palette from one image to another"
 readme = "README.md"
@@ -15,6 +15,6 @@ homepage = "https://github.com/awxkee/palette-transfer.git"
 repository = "https://github.com/awxkee/palette-transfer.git"
 exclude = ["*.jpg"]
 
-
 [dependencies]
-colorutils-rs = "0.6.1"
+colorutils-rs = "0.7.0"
+rayon = "1.10.0"

@@ -12,6 +12,6 @@ impl Average<f64> for Vec<f32> {
         let count = self.len();
         let accumulator = self.sums();
 
-        return accumulator / count as f64;
+        accumulator / count as f64
     }
 }

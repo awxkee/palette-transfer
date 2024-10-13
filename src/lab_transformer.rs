@@ -5,7 +5,10 @@
  * // license that can be found in the LICENSE file.
  */
 
-use colorutils_rs::{lab_to_srgb, lab_with_alpha_to_rgba, rgb_to_lab, rgba_to_lab_with_alpha};
+use colorutils_rs::{
+    lab_to_srgb, lab_with_alpha_to_rgba, rgb_to_lab, rgba_to_lab_with_alpha, TransferFunction,
+    SRGB_TO_XYZ_D65, XYZ_TO_SRGB_D65,
+};
 
 pub(crate) fn image_to_lab_rgb<const CHANNELS: usize>(
     src: &[u8],
@@ -21,6 +24,8 @@ pub(crate) fn image_to_lab_rgb<const CHANNELS: usize>(
             std::mem::size_of::<f32>() as u32 * width * CHANNELS as u32,
             width,
             height,
+            &SRGB_TO_XYZ_D65,
+            TransferFunction::Srgb,
         );
     } else if CHANNELS == 4 {
         rgba_to_lab_with_alpha(
@@ -30,6 +35,8 @@ pub(crate) fn image_to_lab_rgb<const CHANNELS: usize>(
             std::mem::size_of::<f32>() as u32 * width * CHANNELS as u32,
             width,
             height,
+            &SRGB_TO_XYZ_D65,
+            TransferFunction::Srgb,
         );
     }
 }
@@ -57,6 +64,8 @@ pub(crate) fn lab_to_image_rgb<const CHANNELS: usize>(
             width * CHANNELS as u32,
             width,
             height,
+            &XYZ_TO_SRGB_D65,
+            TransferFunction::Srgb,
         );
     }
 }

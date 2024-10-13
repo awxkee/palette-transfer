@@ -199,7 +199,7 @@ fn copy_palette_impl<const SOURCE_IMAGE_CONFIGURATION: u8>(
 
     display_transformer(&perceptual_dest, target, target_width, target_height);
 
-    return Ok(());
+    Ok(())
 }
 
 /// Copies palette from one RGB image to another RGB image
